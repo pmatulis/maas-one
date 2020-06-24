@@ -1,38 +1,41 @@
 Overview:
 
-a. 1 large Icarus MAAS node, with Bionic deployed via the MAAS web UI.
+a. 1 large host (the "KVM host") running Ubuntu 18.04 LTS or Ubuntu 20.04 LTS
 b. 6 KVM guests created with virt-install on this machine:
-	- 1 for the MAAS server
+	- 1 for the MAAS host (running 18.04 or 20.04; and the 'maas' snap)
 	- 1 for the Juju controller
-	- 4 for the cloud nodes
-c. Icarus node, beyond hosting KVM guests, will act as:
+	- 4 for the MAAS nodes
+c. 2 libvirt networks will be used:
+	- 'external' for the external side of the MAAS host (DHCP enabled)
+	- 'internal' for the internal side of the MAAS host (DHCP disabled)
+d. The host, beyond hosting KVM guests, will act as:
 	- Juju client
 	- OpenStack client
-d. 2 libvirt networks will be used:
-	- 'external' for the external side of the MAAS server (DHCP enabled)
-	- 'internal' for the internal side of the MAAS server (DHCP disabled)
 
+[ INSERT NETWORK DIAGRAM HERE ]
 
-SSH to Icarus node with agent forwarding enabled
+SSH to host with agent forwarding enabled
 (this can help with connectivity as uvtool can auto-install the agent's keys on its created instances) 
 
-$ ssh -A <icarus-ip-address>
-
+ssh -A <kvm-host>
 
 cd
+sudo apt update
+sudo apt full-upgrade -y
 sudo apt install -y uvtool virtinst
-sudo uvt-simplestreams-libvirt sync release=focal arch=amd64 (this only affects the Ubuntu release of the MAAS server)
+sudo uvt-simplestreams-libvirt sync release=focal arch=amd64  # this only affects the Ubuntu release of the MAAS server
 sudo snap install juju --classic
 sudo snap install charm --classic
 sudo snap install openstackclients --classic
 charm pull openstack-base
+git clone https://github.com/pmatulis/maas-one
 
 Log out and back in again. Ensure the 'default' libvirt network exists:
-$ virsh net-list --all
-
+(try with sudo, might be a local user permissions/group thing)
+virsh net-list --all
 
 --------------------------------------
-OPTIONAL: USE ZFS POOLS
+OPTIONAL: USE ZFS POOLS WITH EXTRA DISKS (OR SOME OTHER WAY TO OPTIMISE THE DISK SUB-SYSTEM) 
 
 sudo apt install -y zfsutils-linux libvirt-daemon-driver-storage-zfs
 sudo systemctl restart libvirtd
@@ -49,10 +52,8 @@ sudo wipefs -a /dev/sdc
 sudo wipefs -a /dev/sdd
 
 sudo zpool create kvm-zfs sdb sdc sdd
-
 sudo zfs create kvm-zfs/images
 virsh pool-define-as --name images --source-name kvm-zfs/images --type zfs
-
 virsh pool-start images
 virsh pool-autostart images
 
@@ -69,8 +70,6 @@ virsh pool-list
  libvirt   active   yes
  uvtool    active   yes
 --------------------------------------
-
-(check above for uvtool)
 
 Create the libvirt networks:
 
@@ -131,7 +130,7 @@ virsh net-autostart internal
 --------------------
 
 
-cd install-maas
+cd ~/maas-one
 ./create-networks.sh
 
 
@@ -170,19 +169,20 @@ $ cat template-maas.xml
 --------------------
 
 
-
-Launch a test instance to discover what names the two network interfaces (created via template-maas.xml) will have:
+Create a test instance to discover what names the two MAAS host network interfaces
+(created via template-maas.xml) will have. These should be used in user-data-maas.yaml below.
 
 uvt-kvm create --template ./template-maas.xml test release=focal
-uvt-kvm ssh test ip a
+uvt-kvm ssh test ip a  # e.g. enp1s0 and enp2s0
 uvt-kvm destroy test
 
+The cloud-init file for the MAAS host.
+Your personal SSH key(s) are imported three times (INSERT YOURS instead of 'petermatulis'):
+a) to the MAAS host 'ubuntu' user (to allow basic connections to the MAAS host)
+b) to the MAAS host 'root' user (to allow transferring the 'root' user public SSH key to the KVM host; for MAAS to be able to manage power of KVM guests)
+c) to the MAAS server 'admin' user (key will be installed on every MAAS-deployed node)
 
-
-The cloud-init file for the MAAS server:
-
-cat user-data-test.yaml
-
+cat user-data-maas.yaml
 --------------------
 #cloud-config
 ssh_pwauth: yes
@@ -227,7 +227,6 @@ power_state:
   mode: reboot
 --------------------
 
-
 Create the MAAS server:
 
 uvt-kvm create \
@@ -237,7 +236,8 @@ uvt-kvm create \
    release=focal
 
 
-Wait about 4 minutes...
+Wait 5 minutes before attempting to contact the MAAS host:
+
 ssh ubuntu@10.0.0.2 tail -f /var/log/cloud-init-output.log
 
 
@@ -246,10 +246,10 @@ Get the MAAS 'admin' user's API key:
 scp ubuntu@10.0.0.2:admin-api-key ~
 
 
-Install the 'root' user public key in the 'ubuntu' user account on the Icarus node
-and confirm that the 'root' user can query the KVM host:
+Install the MAAS host 'root' user public SSH key into the 'ubuntu' user account on the KVM host
+and confirm that the 'root' user can query the KVM host's guests:
 
-ssh root@10.0.0.2 cat /var/snap/maas/current/root/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+ssh root@10.0.0.2 cat /var/snap/maas/current/root/.ssh/id_rsa.pub >> /home/ubuntu/.ssh/authorized_keys
 
 --------
 Test MAAS:KVM connectivity:
@@ -263,7 +263,7 @@ exit
 
 Access the web UI for the first time:
 
-ssh -N -L 8002:10.0.0.2:5240 ubuntu@<icarus-ip-address> (from desktop)
+ssh -N -L 8002:10.0.0.2:5240 ubuntu@<kvm-host> (from your desktop)
 
 http://localhost:8002/MAAS
 
@@ -317,7 +317,8 @@ virt-install \
 
 
 
-$ cat create-nodes.sh 
+cat create-nodes.sh 
+-----------------
 #!/bin/sh -e
 
 VARIANT=ubuntu18.04

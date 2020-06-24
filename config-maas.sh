@@ -13,6 +13,7 @@ DHCP_RANGE_START=10.0.0.10
 DHCP_RANGE_END=10.0.0.99
 VIP_RANGE_START=10.0.0.100
 VIP_RANGE_END=10.0.0.119
+MAAS_IMAGES="bionic focal"
 
 maas login $PROFILE http://localhost:5240/MAAS - < $API_KEY_FILE >/dev/null
 
@@ -25,31 +26,17 @@ maas $PROFILE ipranges create type=reserved start_ip=$VIP_RANGE_START end_ip=$VI
 maas $PROFILE subnet update $INTERNAL_SUBNET gateway_ip=$KVM_INTERNAL_IP >/dev/null && echo "Default gateway set for subnet $INTERNAL_SUBNET"
 maas $PROFILE subnet update $INTERNAL_SUBNET dns_servers=$KVM_INTERNAL_IP >/dev/null && echo "DNS server set for subnet $INTERNAL_SUBNET"
 
-declare -A nodeNamesMACs=( \
-        [node1]=52:54:00:03:01:01 \
-        [node2]=52:54:00:03:02:01 \
-        [node3]=52:54:00:03:03:01 \
-        [node4]=52:54:00:03:04:01 \
-        [controller]=52:54:00:02:01:01 \
-        )
+for i in $MAAS_IMAGES; do
 
-maas $PROFILE tags create name=juju comment='Juju controller' >/dev/null && echo -ne "\nMAAS tag 'controller' created"
-
-# For each KVM guest node:
-for i in "${!nodeNamesMACs[@]}"; do
-        echo -e "\nConfiguring node $i"
-        MAC1=${nodeNamesMACs[$i]}
-        SYSTEM_ID=$(maas $PROFILE machines read mac_address=$MAC1 | grep -i system_id -m 1 | cut -d '"' -f 4)
-        maas $PROFILE machine update $SYSTEM_ID \
-                hostname=$i \
-                power_type=virsh \
-                power_parameters_power_address=qemu+ssh://ubuntu@"$KVM_EXTERNAL_IP"/system \
-                power_parameters_power_id=$i >/dev/null && echo "- Node name changed and power type configured"
-        maas $PROFILE machine commission $SYSTEM_ID testing_scripts=none >/dev/null && echo "- Node commissioning (hardware tests skipped)"
-
-        # Node 'controller' is the Juju controller, apply tag 'juju'
-        if [ $i = "controller" ]; then
-                 maas $PROFILE tag update-nodes controller add=$SYSTEM_ID >/dev/null && echo "- Tag 'juju' assigned to node $i"
-        fi
+	maas $PROFILE boot-source-selections create 1 \
+	   os="ubuntu" release="$i" arches="amd64" subarches="hwe-x" labels="*" \
+	   >/dev/null && echo "\n$i amd64 images selected for download"
 
 done
+
+maas $PROFILE boot-resources import >/dev/null && echo "Importing images now..."
+
+#echo "> > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > ETA"
+#IMAGES_DIR=/var/lib/maas/boot-resources/current/ubuntu/amd64/generic
+#until ls -l \$IMAGES_DIR | grep trusty >/dev/null ; do sleep 10; echo -n "> "; done   # more hardcoded stuff
+#echo "\nDone!"
