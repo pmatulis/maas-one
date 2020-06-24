@@ -35,8 +35,3 @@ for i in $MAAS_IMAGES; do
 done
 
 maas $PROFILE boot-resources import >/dev/null && echo "Importing images now..."
-
-#echo "> > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > ETA"
-#IMAGES_DIR=/var/lib/maas/boot-resources/current/ubuntu/amd64/generic
-#until ls -l \$IMAGES_DIR | grep trusty >/dev/null ; do sleep 10; echo -n "> "; done   # more hardcoded stuff
-#echo "\nDone!"
