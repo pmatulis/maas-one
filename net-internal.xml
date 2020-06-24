@@ -1,0 +1,13 @@
+<network>                                                                       
+  <name>internal</name>                                                         
+  <uuid>790274ec-2590-4854-b432-ea7d22deb668</uuid>                             
+  <forward mode='nat'>                                                          
+    <nat>                                                                       
+      <port start='1024' end='65535'/>                                          
+    </nat>                                                                      
+  </forward>                                                                    
+  <bridge name='virbr1' stp='on' delay='0'/>                                    
+  <mac address='52:54:00:c9:86:41'/>                                            
+  <ip address='10.0.0.1' netmask='255.255.255.0'>                               
+  </ip>                                                                         
+</network>

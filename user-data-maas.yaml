@@ -1,0 +1,41 @@
+#cloud-config
+ssh_pwauth: yes
+chpasswd:
+  list: |
+    ubuntu:ubuntu
+  expire: False
+
+write_files:
+  - path: /etc/netplan/50-cloud-init.yaml
+    owner: root:root
+    permissions: '0644'
+    content: |
+      network:
+        version: 2
+        ethernets:
+          enp1s0:
+              dhcp4: true
+              match:
+                  macaddress: '52:54:00:01:01:01'
+              set-name: enp1s0
+          enp2s0:
+              dhcp4: false
+              match:
+                  macaddress: '52:54:00:01:01:02'
+              set-name: enp2s0
+              addresses:
+                - 10.0.0.2/24
+
+runcmd:
+  - snap install maas-test-db
+  - snap install maas --channel=2.8/candidate
+  - maas init region+rack --maas-url http://10.0.0.2:5240/MAAS --database-uri maas-test-db:///
+  - maas createadmin --username admin --password ubuntu --email admin@example.com --ssh-import lp:petermatulis
+  - maas apikey --username admin > ~ubuntu/admin-api-key
+  - mkdir -p /var/snap/maas/current/root/.ssh
+  - ssh-keygen -q -N '' -f /var/snap/maas/current/root/.ssh/id_rsa
+  - ssh-import-id lp:petermatulis
+  - su - ubuntu -c "ssh-import-id lp:petermatulis"
+
+power_state:
+  mode: reboot
