@@ -2,7 +2,7 @@
 
 This project installs a MAAS cluster on a single machine. 
 
-Summary of the environment:
+Environment summary:
 
 * 1 powerful host (the "KVM host") running Ubuntu 18.04 LTS or Ubuntu 20.04 LTS
 
@@ -26,26 +26,23 @@ Before you begin look over all the files. They're pretty simple.
 
 ## General topology
 
-                          +
                           |
                eth0 +-----+
                           |
-    +-----------------------------------------+
-    | MAAS host           |       MAAS host   |
-    | 192.168.122.2       |       10.0.0.2    |
-    |                     |                   |
-    |                     +-----+ virbr1      |
-    |                     |       10.0.0.1    |
-    |                     |                   |
-    |        virbr0 +-----+                   |
-    | 192.168.122.1       |                   |
-    |                     |                   |
-    +-----------------------------------------+
+    +-------------------------------------------+
+    | MAAS host           |       MAAS host     |
+    | 192.168.122.2       |       10.0.0.2      |
+    |                     |                     |
+    |                     +-----+ virbr1        |
+    |                     |       10.0.0.1      |
+    |        virbr0 +-----+                     |
+    | 192.168.122.1       |                     |
+    +-------------------------------------------+
       192.168.122.0/24    | 10.0.0.0/24
       external            | internal
                           |
       libvirt DHCP on     | libvirt DHCP off
-                          |
+                          | MAAS DHCP on
 
 ## MAAS node network
 
@@ -158,7 +155,7 @@ Transfer some scripts to the MAAS host:
 
     scp config-maas.sh config-nodes.sh maas-login.sh ubuntu@10.0.0.2:
 
-Script `maas-login.sh` is a handy script for logging in to MAAS.
+> **Note**: Script `maas-login.sh` is a handy script for logging in to MAAS.
 
 ## Configure MAAS
 
