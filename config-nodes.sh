@@ -13,7 +13,7 @@ declare -A nodeNamesMACs=( \
         [controller]=52:54:00:02:01:01 \
         )
 
-maas $PROFILE tags create name=juju comment='Juju controller' >/dev/null && echo -ne "\nMAAS tag 'controller' created"
+maas $PROFILE tags create name=juju comment='Juju controller' >/dev/null && echo -ne "\nMAAS tag 'juju' created"
 
 # For each KVM guest node:
 for i in "${!nodeNamesMACs[@]}"; do

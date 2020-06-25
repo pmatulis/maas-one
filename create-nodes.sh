@@ -1,5 +1,6 @@
 #!/bin/sh -e
 
+OS_VARIANT=ubuntu18.04
 POOL=images  # Remove 'pool' option below if not using a libvirt storage pool.
 
 # The Juju controller
@@ -11,6 +12,7 @@ NAME=controller
 MAC1="52:54:00:02:01:01"
 
 virt-install \
+	--os-variant $OS_VARIANT \
         --graphics vnc \
         --noautoconsole \
         --network network=internal,mac=$MAC1 \
@@ -51,6 +53,7 @@ for NAME in node1 node2 node3 node4; do
         esac
 
         virt-install \
+		--os-variant $OS_VARIANT \
                 --graphics vnc \
                 --noautoconsole \
                 --network network=internal,mac=$MAC1 \

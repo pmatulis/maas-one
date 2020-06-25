@@ -1,0 +1,36 @@
+sudo apt install -y zfsutils-linux libvirt-daemon-driver-storage-zfs
+sudo systemctl restart libvirtd
+
+lsblk
+
+Ignore next block of commands if bcache is not an issue. Here, I'm removing
+them so I can gain access to their underlying block devices.
+
+echo 1 | sudo tee /sys/block/bcache0/bcache/detach
+echo 1 | sudo tee /sys/block/bcache0/bcache/stop
+echo 1 | sudo tee /sys/block/bcache1/bcache/detach
+echo 1 | sudo tee /sys/block/bcache1/bcache/stop
+echo 1 | sudo tee /sys/block/bcache2/bcache/detach
+echo 1 | sudo tee /sys/block/bcache2/bcache/stop
+sudo wipefs -a /dev/sdb
+sudo wipefs -a /dev/sdc
+sudo wipefs -a /dev/sdd
+
+sudo zpool create kvm-zfs sdb sdc sdd
+sudo zfs create kvm-zfs/images
+virsh pool-define-as --name images --source-name kvm-zfs/images --type zfs
+virsh pool-start images
+virsh pool-autostart images
+
+zfs list -t all
+
+NAME             USED  AVAIL     REFER  MOUNTPOINT
+kvm-zfs          160K  2.63T       24K  /kvm-zfs
+kvm-zfs/images    24K  2.63T       24K  /kvm-zfs/images
+
+virsh pool-list
+
+ Name      State    Autostart
+-------------------------------
+ libvirt   active   yes
+ uvtool    active   yes
