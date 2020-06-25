@@ -118,6 +118,8 @@ of 'petermatulis'):
 1. to the MAAS server 'admin' user
    - key will be installed on every MAAS-deployed node
 
+This key should be forwarded when initially connecting to the KVM host.
+
 ## Create the MAAS host and server
 
 Create the MAAS host and server from the KVM host:
@@ -129,13 +131,13 @@ Create the MAAS host and server from the KVM host:
        --cpu 4 --memory 4096 --disk 30 maas \
        release=focal
 
-Wait 5 minutes before attempting to contact the MAAS host:
+Wait about five minutes before attempting to contact the MAAS host:
 
     ssh ubuntu@10.0.0.2 tail -f /var/log/cloud-init-output.log
 
 ## Post install MAAS tasks
 
-Get the API key for the MAAS 'admin' user:
+Get the API key for the MAAS server 'admin' user:
 
     scp ubuntu@10.0.0.2:admin-api-key ~
 
@@ -144,7 +146,7 @@ account on the KVM host:
 
     ssh root@10.0.0.2 cat /var/snap/maas/current/root/.ssh/id_rsa.pub >> /home/ubuntu/.ssh/authorized_keys
 
-Confirm that the 'root' user can query the KVM host's guests:
+Confirm that the 'root' user can query libvirtd of the KVM host:
 
     ssh ubuntu@10.0.0.2
     sudo snap run --shell maas
@@ -155,6 +157,8 @@ Confirm that the 'root' user can query the KVM host's guests:
 Transfer some scripts to the MAAS host:
 
     scp config-maas.sh config-nodes.sh maas-login.sh ubuntu@10.0.0.2:
+
+Script `maas-login.sh` is a handy script for logging in to MAAS.
 
 ## Configure MAAS
 
@@ -196,7 +200,7 @@ Continue only when the nodes are all in the 'New' state.
 
 Rename, configure power, and commission the nodes.
 
-Connect to the MAAS host:
+Connect to the MAAS host and run a script:
 
     ssh ubuntu@10.0.0.2
     ./config-nodes.sh
