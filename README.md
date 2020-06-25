@@ -4,24 +4,24 @@ An all-in-one MAAS setup.
 
 This repository shows how to install a MAAS environment on a single machine. 
 
-a. 1 large host (the "KVM host") running Ubuntu 18.04 LTS or Ubuntu 20.04 LTS
-b. 6 KVM guests created with virt-install on this machine:
-	- 1 for the MAAS host (running 18.04 or 20.04; and the 'maas' snap)
-	- 1 for the Juju controller
-	- 4 for the MAAS nodes
-c. 2 libvirt networks will be used:
-	- 'external' for the external side of the MAAS host (DHCP enabled)
-	- 'internal' for the internal side of the MAAS host (DHCP disabled)
-d. The host, beyond hosting KVM guests, will act as:
+* 1 large host (the "KVM host") running Ubuntu 18.04 LTS or Ubuntu 20.04 LTS
+* 6 KVM guests created with virt-install on this machine:
+     - 1 for the MAAS host (running 18.04 or 20.04; and the 'maas' snap)
+     - 1 for the Juju controller
+     - 4 for the MAAS nodes
+* 2 libvirt networks will be used:
+     - 'external' for the external side of the MAAS host (DHCP enabled)
+     - 'internal' for the internal side of the MAAS host (DHCP disabled)
+* The host, beyond hosting KVM guests, will act as:
 	- Juju client
 	- OpenStack client
 
 [ INSERT NETWORK DIAGRAM HERE ]
 
 1. DNS for subnet: 10.0.0.1
-2. Gateway for subnet: 10.0.0.1
-3. Enable DHCP for the 'untagged' VLAN
-4. Set up Reserved IP ranges:
+1. Gateway for subnet: 10.0.0.1
+1. Enable DHCP for the 'untagged' VLAN
+1. Set up Reserved IP ranges:
 
    10.0.0.1   - 10.0.0.9     Infra
    10.0.0.10  - 10.0.0.99    VIP	<-- HA workloads
@@ -36,18 +36,18 @@ d. The host, beyond hosting KVM guests, will act as:
 SSH to host with agent forwarding enabled. This can help with connectivity as uvtool
 can auto-install the agent's keys on its created instances. 
 
-ssh -A <kvm-host>
-
-cd
-sudo apt update
-sudo apt full-upgrade -y
-sudo apt install -y uvtool virtinst
-sudo uvt-simplestreams-libvirt sync release=focal arch=amd64  # this only affects the Ubuntu release of the MAAS server
-sudo snap install juju --classic
-sudo snap install charm --classic
-sudo snap install openstackclients --classic
-charm pull openstack-base
-git clone https://github.com/pmatulis/maas-one
+    ssh -A <kvm-host>
+    
+    cd
+    sudo apt update
+    sudo apt full-upgrade -y
+    sudo apt install -y uvtool virtinst
+    sudo uvt-simplestreams-libvirt sync release=focal arch=amd64  # this only affects the Ubuntu release of the MAAS server
+    sudo snap install juju --classic
+    sudo snap install charm --classic
+    sudo snap install openstackclients --classic
+    charm pull openstack-base
+    git clone https://github.com/pmatulis/maas-one
 
 ## Set up the environment
 
