@@ -2,27 +2,27 @@
 
 An all-in-one MAAS setup.
 
-This repository is for installing a MAAS environment on a single machine. 
+This project is for installing a MAAS cluster on a single machine. 
+
+Description of the entire environment:
 
 * 1 large host (the "KVM host") running Ubuntu 18.04 LTS or Ubuntu 20.04 LTS
 
-* 6 KVM guests created with virt-install on this machine:
+* 6 KVM guests residing on the KVM host:
      - 1 for the MAAS host itself
      - 1 for the Juju controller
      - 4 for the MAAS nodes (available for deployments)
 
-* 2 libvirt networks will be used:
+* 2 libvirt networks:
      - 'external' for the external side of the MAAS host (DHCP enabled)
      - 'internal' for the internal side of the MAAS host (DHCP disabled)
 
-* The host, beyond hosting KVM guests, will act as:
-	- Juju client
-	- OpenStack client
+* The KVM host, beyond hosting the guests, will act as the Juju client
 
-MAAS is installed from snaps.
+MAAS is installed from a snap.
 
-The four MAAS nodes are powerful machines with multiple network interfaces and disks.
-The original intent is the deployment of Charmed OpenStack.
+The four MAAS nodes are powerful machines with multiple network interfaces
+and disks. The original intent was the deployment of Charmed OpenStack.
 Adjust per your needs and desires.
 
 Network diagram:
@@ -47,9 +47,13 @@ So any deployed nodes will use:
    
     10.0.0.120 - 10.0.0.254
 
+## Before you begin
+
+Before you begin look over all the files. They're pretty simple.
+
 ## Install the software
 
-SSH to host with agent forwarding enabled. This can help with connectivity
+SSH to host with agent forwarding enabled. Forwarding can help with connectivity
 as uvtool can auto-install the agent's keys on its created instances. 
 
     ssh -A <kvm-host>
@@ -65,8 +69,8 @@ as uvtool can auto-install the agent's keys on its created instances.
     charm pull openstack-base
     git clone https://github.com/pmatulis/maas-one
 
-The `uvt-simplestreams-libvirt` command provides the release to use for the
-MAAS server itself.
+The `uvt-simplestreams-libvirt` command provides the release for the MAAS
+host itself.
 
 ## Set up the environment
 
@@ -77,7 +81,7 @@ Log out and back in again and ensure the 'default' libvirt network exists:
 OPTIONAL: Use ZFS pools with extra disks
 (or some other way to optimise the disk sub-system) 
 
-If choosing ZFS like this, perform steps described in zfs-pools.txt now.
+If choosing ZFS like this, perform the steps in zfs-pools.txt now.
 
 Create the libvirt networks:
 
@@ -94,7 +98,8 @@ user-data-maas.yaml, the cloud-init file for the MAAS host.
 
 Edit user-data-maas.yaml:
 
-Your personal SSH key(s) are imported three times (INSERT YOURS instead of 'petermatulis'):
+Your personal SSH key(s) are imported three times (INSERT YOURS instead
+of 'petermatulis'):
 
 1. to the MAAS host 'ubuntu' user
    - to allow basic connections to the MAAS host
@@ -106,8 +111,11 @@ Your personal SSH key(s) are imported three times (INSERT YOURS instead of 'pete
 1. to the MAAS server 'admin' user
    - key will be installed on every MAAS-deployed node
 
-## Create the MAAS server
+## Create the MAAS host and server
 
+Create the MAAS host and server from the KVM host:
+
+    cd ~/maas-one
     uvt-kvm create \
        --template ./template-maas.xml \
        --user-data ./user-data-maas.yaml \
@@ -125,12 +133,11 @@ Transfer over the MAAS 'admin' user's API key:
     scp ubuntu@10.0.0.2:admin-api-key ~
 
 Install the MAAS host 'root' user public SSH key into the 'ubuntu'
-user account on the KVM host and confirm that the 'root' user can
-query the KVM host's guests:
+user account on the KVM host:
 
     ssh root@10.0.0.2 cat /var/snap/maas/current/root/.ssh/id_rsa.pub >> /home/ubuntu/.ssh/authorized_keys
 
-Test MAAS:KVM connectivity:
+Confirm that the 'root' user can query the KVM host's guests:
 
     ssh ubuntu@10.0.0.2
     sudo snap run --shell maas
@@ -154,6 +161,7 @@ Connect to the MAAS host and run a script:
 
 Run a script on the KVM host:
 
+    cd ~/maas-one
     ./create-nodes.sh
 
 ## Verify the web UI
@@ -193,8 +201,11 @@ Define a MAAS cloud, add it to Juju, and add a cloud credential:
 
 Run a script on the KVM host:
 
+    cd ~/maas-one
     ./add-cloud-and-creds.sh
 
 ## Create the Juju controller
+
+Create the controller from the KVM host:
 
     juju bootstrap --bootstrap-constraints tags=juju mymaas maas-controller
