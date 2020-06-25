@@ -2,7 +2,7 @@
 
 This project installs a MAAS cluster on a single machine. 
 
-Description of the entire environment:
+Summary of the environment:
 
 * 1 powerful host (the "KVM host") running Ubuntu 18.04 LTS or Ubuntu 20.04 LTS
 
@@ -12,15 +12,15 @@ Description of the entire environment:
      * 4 for the MAAS nodes (available for deployments)
 
 * 2 libvirt networks:
-     * 'external' for the external side of the MAAS host (libvirt DHCP enabled)
-     * 'internal' for the internal side of the MAAS host (libvirt DHCP disabled)
+     * 'external' for the external side of the MAAS host
+     * 'internal' for the internal side of the MAAS host
 
 * The KVM host, beyond hosting the guests, will act as the Juju client
 
 The four guests destined for MAAS nodes are currently configured with a lot of
-CPU power, a lot of memory, with two network interfaces, and multiple
-disks. This is because the original intent was the deployment of Charmed
-OpenStack. Adjust per your needs and desires by modifying `create-nodes.sh`.
+CPU power, a lot of memory, two network interfaces, and three disks. This is
+because the original intent was the deployment of Charmed OpenStack. Adjust per
+your needs and desires by modifying `create-nodes.sh`.
 
 Before you begin look over all the files. They're pretty simple.
 
@@ -31,7 +31,7 @@ Before you begin look over all the files. They're pretty simple.
                eth0 +-----+
                           |
     +-----------------------------------------+
-    | MAAS server         |       MAAS server |
+    | MAAS host           |       MAAS host   |
     | 192.168.122.2       |       10.0.0.2    |
     |                     |                   |
     |                     +-----+ virbr1      |
@@ -204,7 +204,7 @@ Connect to the MAAS host:
 
 ## Configure Juju
 
-Define a MAAS cloud, add it to Juju, and add a cloud credential:
+Define a MAAS cloud, add it to Juju, and add a cloud credential.
 
 Run a script on the KVM host:
 
@@ -213,6 +213,6 @@ Run a script on the KVM host:
 
 ## Create the Juju controller
 
-Create the controller from the KVM host:
+Create a controller called 'maas-one' for cloud 'mymaas' from the KVM host:
 
-    juju bootstrap --bootstrap-constraints tags=juju mymaas maas-controller
+    juju bootstrap --bootstrap-constraints tags=juju mymaas maas-one

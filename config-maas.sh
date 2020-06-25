@@ -47,7 +47,7 @@ maas $PROFILE subnet update \
 # An image for the latest LTS release (first point release must be available)
 #   is selected by default (with the MAAS host's architecture).
 #   You may not need anything else.
-# We're being explicit here. INFORMATION IS HARDCODED.
+# We're being explicit here.
 for i in $MAAS_IMAGES; do
 
 	maas $PROFILE boot-source-selections create 1 \
