@@ -18,7 +18,7 @@ Description of the entire environment:
 * The KVM host, beyond hosting the guests, will act as the Juju client
 
 The four guests destined for MAAS nodes are currently configured with a lot of
-CPU power, a lot of memory, with multiple network interfaces and multiple
+CPU power, a lot of memory, with two network interfaces, and multiple
 disks. This is because the original intent was the deployment of Charmed
 OpenStack. Adjust per your needs and desires by modifying `create-nodes.sh`.
 
@@ -49,19 +49,15 @@ Before you begin look over all the files. They're pretty simple.
 
 ## MAAS node network
 
-Subnet DNS:
+Subnet DNS: `10.0.0.1`
 
-    10.0.0.1
-
-Subnet gateway:
-
-    10.0.0.1
+Subnet gateway: `10.0.0.1`
 
 Reserved IP ranges:
 
     10.0.0.1   - 10.0.0.9     Infra
-    10.0.0.10  - 10.0.0.99    VIP       <-- HA workloads
-    10.0.0.100 - 10.0.0.119   Dynamic  	<-- DHCP (enlistment, commissioning)
+    10.0.0.10  - 10.0.0.99    VIP       <-- HA workloads (if needed)
+    10.0.0.100 - 10.0.0.119   Dynamic   <-- DHCP (enlistment, commissioning)
 
 So deployed nodes will use:
    
@@ -70,7 +66,7 @@ So deployed nodes will use:
 ## Download this repo
 
 SSH to the KVM host with agent forwarding enabled. Forwarding can help with
-connectivity as uvtool can auto-install the agent's keys on its created
+connectivity as `uvtool` can auto-install the agent's keys on its created
 instances. 
 
     ssh -A <kvm-host>
