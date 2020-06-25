@@ -18,10 +18,15 @@ This repository shows how to install a MAAS environment on a single machine.
 
 [ INSERT NETWORK DIAGRAM HERE ]
 
-1. DNS for subnet: 10.0.0.1
-1. Gateway for subnet: 10.0.0.1
-1. Reserved IP ranges:
+The subnet DNS:
 
+    10.0.0.1
+
+The subnet gateway:
+
+    10.0.0.1
+
+The reserved IP ranges:
 
     10.0.0.1   - 10.0.0.9     Infra
     10.0.0.10  - 10.0.0.99    VIP	<-- HA workloads
