@@ -20,8 +20,8 @@ This repository shows how to install a MAAS environment on a single machine.
 
 1. DNS for subnet: 10.0.0.1
 1. Gateway for subnet: 10.0.0.1
-1. Enable DHCP for the 'untagged' VLAN
-1. Set up Reserved IP ranges:
+1. Reserved IP ranges:
+
 
     10.0.0.1   - 10.0.0.9     Infra
     10.0.0.10  - 10.0.0.99    VIP	<-- HA workloads
