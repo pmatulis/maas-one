@@ -1,7 +1,7 @@
-#!/bin/bash                                                                                                                             
-                                                                                                                                        
-#set -e                                                                                                                                 
-                                                                                                                                        
+#!/bin/bash
+
+#set -e
+
 PROFILE=admin
 API_KEY_FILE=/home/ubuntu/admin-api-key
 KVM_INTERNAL_IP=10.0.0.1
@@ -58,4 +58,4 @@ done
 
 # Initiate the import of images selected above.
 maas $PROFILE boot-resources import \
-	>/dev/null && echo "Importing Bionic and Focal amd64 images now..."
+	>/dev/null && echo "Importing $MAAS_IMAGES amd64 images now..."

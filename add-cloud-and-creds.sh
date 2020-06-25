@@ -25,8 +25,3 @@ HERE
 
 juju add-cloud --client $CLOUD_NAME $CLOUD_YAML
 juju add-credential --client -f $CREDS_YAML $CLOUD_NAME
-
-echo
-echo "To create the Juju controller for cloud $CLOUD_NAME:"
-echo
-echo "juju bootstrap --bootstrap-constraints tags=juju mymaas maas-controller"
