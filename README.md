@@ -2,19 +2,30 @@
 
 An all-in-one MAAS setup.
 
-This repository shows how to install a MAAS environment on a single machine. 
+This repository is for installing a MAAS environment on a single machine. 
 
 * 1 large host (the "KVM host") running Ubuntu 18.04 LTS or Ubuntu 20.04 LTS
+
 * 6 KVM guests created with virt-install on this machine:
-     - 1 for the MAAS host (installed from the 'maas' snap)
+     - 1 for the MAAS host itself
      - 1 for the Juju controller
-     - 4 for the MAAS nodes
+     - 4 for the MAAS nodes (available for deployments)
+
 * 2 libvirt networks will be used:
      - 'external' for the external side of the MAAS host (DHCP enabled)
      - 'internal' for the internal side of the MAAS host (DHCP disabled)
+
 * The host, beyond hosting KVM guests, will act as:
 	- Juju client
 	- OpenStack client
+
+MAAS is installed from snaps.
+
+The four MAAS nodes are powerful machines with multiple network interfaces and disks.
+The original intent is the deployment of Charmed OpenStack.
+Adjust per your needs and desires.
+
+Network diagram:
 
 [ INSERT NETWORK DIAGRAM HERE ]
 
@@ -29,7 +40,7 @@ The subnet gateway:
 The reserved IP ranges:
 
     10.0.0.1   - 10.0.0.9     Infra
-    10.0.0.10  - 10.0.0.99    VIP	<-- HA workloads
+    10.0.0.10  - 10.0.0.99    VIP       <-- HA workloads
     10.0.0.100 - 10.0.0.119   Dynamic  	<-- DHCP (enlistment, commissioning)
 
 So any deployed nodes will use:
@@ -38,8 +49,8 @@ So any deployed nodes will use:
 
 ## Install the software
 
-SSH to host with agent forwarding enabled. This can help with connectivity as uvtool
-can auto-install the agent's keys on its created instances. 
+SSH to host with agent forwarding enabled. This can help with connectivity
+as uvtool can auto-install the agent's keys on its created instances. 
 
     ssh -A <kvm-host>
     
@@ -54,7 +65,8 @@ can auto-install the agent's keys on its created instances.
     charm pull openstack-base
     git clone https://github.com/pmatulis/maas-one
 
-The `uvt-simplestreams-libvirt` command provides the release to use for the MAAS server itself.
+The `uvt-simplestreams-libvirt` command provides the release to use for the
+MAAS server itself.
 
 ## Set up the environment
 
@@ -62,7 +74,9 @@ Log out and back in again and ensure the 'default' libvirt network exists:
 
     virsh net-list --all
 
-OPTIONAL: USE ZFS POOLS WITH EXTRA DISKS (OR SOME OTHER WAY TO OPTIMISE THE DISK SUB-SYSTEM) 
+OPTIONAL: Use ZFS pools with extra disks
+(or some other way to optimise the disk sub-system) 
+
 If choosing ZFS like this, perform steps described in zfs-pools.txt now.
 
 Create the libvirt networks:
@@ -70,20 +84,27 @@ Create the libvirt networks:
     cd ~/maas-one
     ./create-networks.sh
 
-Create a test instance to discover the names of the two MAAS host network interfaces
-(created via template-maas.xml). These should be used in user-data-maas.yaml, the
-cloud-init file for the MAAS host.
+Create a test instance to discover the names of the two MAAS host network
+interfaces (created via template-maas.xml). Reference these in
+user-data-maas.yaml, the cloud-init file for the MAAS host.
 
     uvt-kvm create --template ./template-maas.xml test release=focal
     uvt-kvm ssh test ip a  # e.g. enp1s0 and enp2s0
     uvt-kvm destroy test
 
 Edit user-data-maas.yaml:
+
 Your personal SSH key(s) are imported three times (INSERT YOURS instead of 'petermatulis'):
 
-1. to the MAAS host 'ubuntu' user (to allow basic connections to the MAAS host)
-1. to the MAAS host 'root' user (to allow transferring the 'root' user public SSH key to the KVM host; for MAAS to be able to manage power of KVM guests)
-1. to the MAAS server 'admin' user (key will be installed on every MAAS-deployed node)
+1. to the MAAS host 'ubuntu' user
+   - to allow basic connections to the MAAS host
+
+1. to the MAAS host 'root' user
+   - to allow transferring the 'root' user public SSH key to the KVM host
+     (for MAAS to be able to manage power of KVM guests)
+
+1. to the MAAS server 'admin' user
+   - key will be installed on every MAAS-deployed node
 
 ## Create the MAAS server
 
@@ -103,8 +124,9 @@ Transfer over the MAAS 'admin' user's API key:
 
     scp ubuntu@10.0.0.2:admin-api-key ~
 
-Install the MAAS host 'root' user public SSH key into the 'ubuntu' user account on the KVM host
-and confirm that the 'root' user can query the KVM host's guests:
+Install the MAAS host 'root' user public SSH key into the 'ubuntu'
+user account on the KVM host and confirm that the 'root' user can
+query the KVM host's guests:
 
     ssh root@10.0.0.2 cat /var/snap/maas/current/root/.ssh/id_rsa.pub >> /home/ubuntu/.ssh/authorized_keys
 
