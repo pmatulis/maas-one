@@ -38,11 +38,15 @@ maas $PROFILE vlan update fabric-1 untagged \
 
 maas $PROFILE subnet update \
 	$INTERNAL_SUBNET gateway_ip=$KVM_INTERNAL_IP \
-	>/dev/null && echo "Default gateway set for subnet $INTERNAL_SUBNET"
+	>/dev/null && echo "Default gateway set to $KVM_INTERNAL_IP for subnet $INTERNAL_SUBNET"
 
 maas $PROFILE subnet update \
 	$INTERNAL_SUBNET dns_servers=$KVM_INTERNAL_IP \
-	>/dev/null && echo "DNS server set for subnet $INTERNAL_SUBNET"
+	>/dev/null && echo "DNS server set to $KVM_INTERNAL_IP for subnet $INTERNAL_SUBNET"
+
+maas $PROFILE maas set-config \
+	name=upstream_dns value=$KVM_INTERNAL_IP \
+	>/dev/null && echo "DNS forwarder set to $KVM_INTERNAL_IP"
 
 # An image for the latest LTS release (first point release must be available)
 #   is selected by default (with the MAAS host's architecture).
