@@ -46,7 +46,7 @@ Before you begin look over all the files. They're pretty simple.
 
 ## MAAS node network
 
-Subnet DNS: `10.0.0.1`
+Subnet DNS: `10.0.0.2`
 
 Subnet gateway: `10.0.0.1`
 
