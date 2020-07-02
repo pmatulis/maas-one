@@ -42,11 +42,15 @@ maas $PROFILE subnet update \
 
 maas $PROFILE subnet update \
 	$INTERNAL_SUBNET dns_servers=$KVM_INTERNAL_IP \
-	>/dev/null && echo "DNS server set to $KVM_INTERNAL_IP for subnet $INTERNAL_SUBNET"
+	>/dev/null && echo "DNS server set to $MAAS_INTERNAL_IP for subnet $INTERNAL_SUBNET"
 
 maas $PROFILE maas set-config \
 	name=upstream_dns value=$KVM_INTERNAL_IP \
 	>/dev/null && echo "DNS forwarder set to $KVM_INTERNAL_IP"
+
+maas $PROFILE maas set-config \
+	name=dnssec_validation value=false \
+	>/dev/null && echo "DNSSEC validation disabled"
 
 # An image for the latest LTS release (first point release must be available)
 #   is selected by default (with the MAAS host's architecture).
