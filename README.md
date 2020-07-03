@@ -82,10 +82,9 @@ Log out and back in again and ensure the 'default' libvirt network exists:
 
     virsh net-list --all
 
-OPTIONAL: Use ZFS pools with extra disks
-(or some other way to optimise the disk sub-system) 
-
-If choosing ZFS like this, perform the steps in `zfs-pools.txt` now.
+> **Optional**: Use ZFS pools with extra disks (or some other way to optimise
+  the disk sub-system). If choosing ZFS like this, perform the steps in
+  `zfs-pools.txt` now.
 
 Create the libvirt networks:
 

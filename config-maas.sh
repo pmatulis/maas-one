@@ -20,6 +20,9 @@ maas login $PROFILE http://localhost:5240/MAAS - < $API_KEY_FILE >/dev/null
 FABRIC_ID=$(maas $PROFILE subnet read $INTERNAL_SUBNET \
 	| grep fabric- -m 1 | awk '{print $2}' | cut -d '"' -f 2)
 
+RACK_SYSTEM_ID=$(maas $PROFILE rack-controllers read \
+	| grep -i system_id -m 1 | cut -d '"' -f 4)
+
 maas $PROFILE ipranges create type=reserved \
 	start_ip=$INFRA_RANGE_START end_ip=$INFRA_RANGE_END comment="Infra" \
 	>/dev/null && echo "Reserved IP range set (Infra)"
@@ -32,8 +35,8 @@ maas $PROFILE ipranges create type=reserved \
 	start_ip=$VIP_RANGE_START end_ip=$VIP_RANGE_END comment="VIP" \
 	>/dev/null && echo "Reserved IP range set (VIP)"
 
-maas $PROFILE vlan update fabric-1 untagged \
-	dhcp_on=True primary_rack=$MAAS_INTERNAL_IP \
+maas $PROFILE vlan update $FABRIC_ID untagged \
+	dhcp_on=True primary_rack=$RACK_SYSTEM_ID \
 	>/dev/null && echo "DHCP enabled on untagged VLAN on $FABRIC-ID"
 
 maas $PROFILE subnet update \
@@ -49,7 +52,7 @@ maas $PROFILE maas set-config \
 	>/dev/null && echo "DNS forwarder set to $KVM_INTERNAL_IP"
 
 maas $PROFILE maas set-config \
-	name=dnssec_validation value=false \
+	name=dnssec_validation value=no \
 	>/dev/null && echo "DNSSEC validation disabled"
 
 # An image for the latest LTS release (first point release must be available)
