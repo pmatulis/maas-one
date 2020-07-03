@@ -22,7 +22,7 @@ CPU power, a lot of memory, two network interfaces, and three disks. This is
 because the original intent was the deployment of [Charmed OpenStack][cdg].
 Adjust per your needs and desires by modifying `create-nodes.sh`.
 
-Before you begin look over all the files. They're pretty simple.
+Before you begin, look over all the files. They're pretty simple.
 
 ## General topology
 
