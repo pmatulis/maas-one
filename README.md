@@ -190,7 +190,7 @@ If not green:
     ssh ubuntu@10.0.0.2 sudo systemctl restart maas-rackd.service
     ssh ubuntu@10.0.0.2 sudo systemctl restart maas-regiond.service
 
-Continue only when the nodes are all in the 'New' state. 
+Continue only when all five nodes are in the 'New' state. 
 
 ## Configure the nodes
 
@@ -202,6 +202,8 @@ Connect to the MAAS host and run a script:
     ./config-nodes.sh
     exit
 
+Continue only when all five nodes are in the 'Ready' state.
+
 ## Configure Juju
 
 Define a MAAS cloud, add it to Juju, and add a cloud credential.
@@ -209,7 +211,7 @@ Define a MAAS cloud, add it to Juju, and add a cloud credential.
 Run a script on the KVM host:
 
     cd ~/maas-one
-    ./add-cloud-and-creds.sh
+    ./cloud-and-creds.sh
 
 ## Create the Juju controller
 

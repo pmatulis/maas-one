@@ -13,7 +13,7 @@ declare -A nodeNamesMACs=( \
         [controller]=52:54:00:02:01:01 \
         )
 
-maas $PROFILE tags create name=juju comment='Juju controller' >/dev/null && echo -ne "\nMAAS tag 'juju' created"
+maas $PROFILE tags create name=juju comment='Juju controller' >/dev/null && echo -ne "\nMAAS tag 'juju' created\n"
 
 # For each KVM guest node:
 for i in "${!nodeNamesMACs[@]}"; do
@@ -29,7 +29,7 @@ for i in "${!nodeNamesMACs[@]}"; do
 
         # Node 'controller' is the Juju controller, apply tag 'juju'
         if [ $i = "controller" ]; then
-                 maas $PROFILE tag update-nodes controller add=$SYSTEM_ID >/dev/null && echo "- Tag 'juju' assigned to node $i"
+                 maas $PROFILE tag update-nodes juju add=$SYSTEM_ID >/dev/null && echo "- Tag 'juju' assigned to node $i"
         fi
 
 done
