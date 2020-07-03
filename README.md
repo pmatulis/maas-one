@@ -215,6 +215,7 @@ Run a script on the KVM host:
 
 ## Create the Juju controller
 
-Create a controller called 'maas-one' for cloud 'mymaas' from the KVM host:
+From the KVM host, create a controller called 'maas-one' for cloud 'mymaas'.
+The node with the assigned tag 'juju' will be used:
 
     juju bootstrap --bootstrap-constraints tags=juju mymaas maas-one
