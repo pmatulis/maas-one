@@ -19,8 +19,8 @@ Environment summary:
 
 The four guests destined for MAAS nodes are currently configured with a lot of
 CPU power, a lot of memory, two network interfaces, and three disks. This is
-because the original intent was the deployment of Charmed OpenStack. Adjust per
-your needs and desires by modifying `create-nodes.sh`.
+because the original intent was the deployment of [Charmed OpenStack][cdg].
+Adjust per your needs and desires by modifying `create-nodes.sh`.
 
 Before you begin look over all the files. They're pretty simple.
 
@@ -219,3 +219,7 @@ From the KVM host, create a controller called 'maas-one' for cloud 'mymaas'.
 The node with the assigned tag 'juju' will be used:
 
     juju bootstrap --bootstrap-constraints tags=juju mymaas maas-one
+
+<!-- LINKS -->
+
+[cdg]: https://docs.openstack.org/project-deploy-guide/charm-deployment-guide/latest/
