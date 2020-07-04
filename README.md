@@ -161,6 +161,25 @@ Connect to the MAAS host and run a script:
     ./config-maas.sh
     exit
 
+## Verify the web UI
+
+Set up local port forwarding from your workstation:
+
+    ssh -N -L 8002:10.0.0.2:5240 ubuntu@<kvm-host>
+
+Access the web UI:
+
+    http://localhost:8002/MAAS
+    credentials: admin/ubuntu
+
+Confirm networking and images.
+
+Verify controller status ('regiond' to 'dhcpd' should be green)
+If not green:
+
+    ssh ubuntu@10.0.0.2 sudo systemctl restart maas-rackd.service
+    ssh ubuntu@10.0.0.2 sudo systemctl restart maas-regiond.service
+
 ## Create the nodes
 
 > **Optional**: Use ZFS pools with extra disks (or some other way to optimise
@@ -178,30 +197,10 @@ script.
 You can ignore the warning that you may get about 'libvirt-qemu' user
 permissions.
 
-## Verify the web UI
-
-Set up local port forwarding from your workstation:
-
-    ssh -N -L 8002:10.0.0.2:5240 ubuntu@<kvm-host>
-
-Access the web UI:
-
-    http://localhost:8002/MAAS
-    credentials: admin/ubuntu
-
-Confirm everything (node names, power, networking, images).
-
-Verify controller status ('regiond' to 'dhcpd' should be green)
-If not green:
-
-    ssh ubuntu@10.0.0.2 sudo systemctl restart maas-rackd.service
-    ssh ubuntu@10.0.0.2 sudo systemctl restart maas-regiond.service
-
-Continue only when all five nodes are in the 'New' state. 
+In the web UI confirm the appearance of the nodes. Continue when all five nodes
+are in the 'New' state. 
 
 ## Configure the nodes
-
-Rename, configure power, and commission the nodes.
 
 Connect to the MAAS host and run a script:
 
@@ -209,7 +208,9 @@ Connect to the MAAS host and run a script:
     ./config-nodes.sh
     exit
 
-Continue only when all five nodes are in the 'Ready' state.
+In the web UI confirm the new node names and node power settings. The nodes
+should also be commissioning. Continue when all five nodes are in the 'Ready'
+state.
 
 ## Configure Juju
 
