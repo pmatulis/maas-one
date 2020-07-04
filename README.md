@@ -82,10 +82,6 @@ Log out and back in again and ensure the 'default' libvirt network exists:
 
     virsh net-list --all
 
-> **Optional**: Use ZFS pools with extra disks (or some other way to optimise
-  the disk sub-system). If choosing ZFS like this, perform the steps in
-  `zfs-pools.txt` now.
-
 Create the libvirt networks:
 
     cd ~/maas-one
@@ -127,9 +123,9 @@ Create the MAAS host and server from the KVM host:
        --cpu 4 --memory 4096 --disk 30 maas \
        release=focal
 
-The MAAS host should be ready after about five minutes:
+The MAAS host should be ready in about five minutes:
 
-    ssh ubuntu@10.0.0.2
+    ssh ubuntu@10.0.0.2 uname
 
 ## Post install MAAS tasks
 
@@ -166,6 +162,10 @@ Connect to the MAAS host and run a script:
     exit
 
 ## Create the nodes
+
+> **Optional**: Use ZFS pools with extra disks (or some other way to optimise
+  the disk sub-system). If choosing ZFS like this, perform the steps in
+  `zfs-pools.txt` now.
 
 Run a script on the KVM host:
 
