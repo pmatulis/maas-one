@@ -37,7 +37,7 @@ maas $PROFILE ipranges create type=reserved \
 
 maas $PROFILE vlan update $FABRIC_ID untagged \
 	dhcp_on=True primary_rack=$RACK_SYSTEM_ID \
-	>/dev/null && echo "DHCP enabled on untagged VLAN on $FABRIC-ID"
+	>/dev/null && echo "DHCP enabled on untagged VLAN on $FABRIC_ID"
 
 maas $PROFILE subnet update \
 	$INTERNAL_SUBNET gateway_ip=$KVM_INTERNAL_IP \
@@ -59,13 +59,17 @@ maas $PROFILE maas set-config \
 #   is selected by default (with the MAAS host's architecture).
 #   You may not need anything else.
 # We're being explicit here.
-for i in $MAAS_IMAGES; do
+# for i in $MAAS_IMAGES; do
+# 
+# 	maas $PROFILE boot-source-selections create 1 \
+# 		os="ubuntu" release="$i" arches="amd64" \
+# 		>/dev/null
+# 
+# done
 
-	maas $PROFILE boot-source-selections create 1 \
-		os="ubuntu" release="$i" arches="amd64" \
-		>/dev/null
-
-done
+maas $PROFILE boot-source-selections create 1 os="ubuntu" release="focal" arches="amd64"
+maas $PROFILE boot-resources import
+exit
 
 # Initiate the import of images selected above.
 maas $PROFILE boot-resources import \

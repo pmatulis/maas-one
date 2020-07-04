@@ -127,9 +127,9 @@ Create the MAAS host and server from the KVM host:
        --cpu 4 --memory 4096 --disk 30 maas \
        release=focal
 
-Wait about five minutes before attempting to contact the MAAS host:
+The MAAS host should be ready after about five minutes:
 
-    ssh ubuntu@10.0.0.2 tail -f /var/log/cloud-init-output.log
+    ssh ubuntu@10.0.0.2
 
 ## Post install MAAS tasks
 
@@ -152,6 +152,7 @@ Confirm that the 'root' user can query libvirtd of the KVM host:
 
 Transfer some scripts to the MAAS host:
 
+    cd ~/maas-one
     scp config-maas.sh config-nodes.sh maas-login.sh ubuntu@10.0.0.2:
 
 > **Note**: Script `maas-login.sh` is a handy script for logging in to MAAS.
@@ -170,6 +171,12 @@ Run a script on the KVM host:
 
     cd ~/maas-one
     ./create-nodes.sh
+
+If you are not using a custom libvirt pool then you will need to edit the
+script.
+
+You can ignore the warning that you may get about 'libvirt-qemu' user
+permissions.
 
 ## Verify the web UI
 
