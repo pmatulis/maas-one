@@ -172,13 +172,11 @@ Access the web UI:
     http://localhost:8002/MAAS
     credentials: admin/ubuntu
 
-Confirm networking and images.
+Confirm networking and images. Verify controller status (items 'regiond' to 'dhcpd'
+should be green). If not green this may help:
 
-Verify controller status ('regiond' to 'dhcpd' should be green)
-If not green:
-
-    ssh ubuntu@10.0.0.2 sudo systemctl restart maas-rackd.service
-    ssh ubuntu@10.0.0.2 sudo systemctl restart maas-regiond.service
+    sudo systemctl restart maas-rackd.service
+    sudo systemctl restart maas-regiond.service
 
 ## Create the nodes
 
