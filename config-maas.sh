@@ -13,7 +13,8 @@ DHCP_RANGE_START=10.0.0.10
 DHCP_RANGE_END=10.0.0.99
 VIP_RANGE_START=10.0.0.100
 VIP_RANGE_END=10.0.0.119
-MAAS_IMAGES="bionic focal"
+IMAGE_SERIES="bionic focal"
+IMAGE_ARCH=amd64
 
 maas login $PROFILE http://localhost:5240/MAAS - < $API_KEY_FILE >/dev/null
 
@@ -59,18 +60,14 @@ maas $PROFILE maas set-config \
 #   is selected by default (with the MAAS host's architecture).
 #   You may not need anything else.
 # We're being explicit here.
-# for i in $MAAS_IMAGES; do
-# 
-# 	maas $PROFILE boot-source-selections create 1 \
-# 		os="ubuntu" release="$i" arches="amd64" \
-# 		>/dev/null
-# 
-# done
+for i in $IMAGE_SERIES; do
 
-maas $PROFILE boot-source-selections create 1 os="ubuntu" release="focal" arches="amd64"
-maas $PROFILE boot-resources import
-exit
+	maas $PROFILE boot-source-selections create 1 \
+		os="ubuntu" release="$i" arches="$IMAGE_ARCH" subarches="*" labels="*" \
+		>/dev/null
+
+done
 
 # Initiate the import of images selected above.
 maas $PROFILE boot-resources import \
-	>/dev/null && echo "Importing $MAAS_IMAGES amd64 images now..."
+	>/dev/null && echo "Importing $IMAGE_SERIES amd64 images now..."
