@@ -78,7 +78,7 @@ Install the software on the KVM host:
 
 ## Set up the environment
 
-Log out and back in again and ensure the 'default' libvirt network exists:
+Log out and back in again and ensure that the 'default' libvirt network exists:
 
     virsh net-list --all
 
@@ -224,7 +224,7 @@ Run a script on the KVM host:
 From the KVM host, create a controller called 'maas-one' for cloud 'mymaas'.
 The node with the assigned tag 'juju' will be used:
 
-    juju bootstrap --bootstrap-constraints tags=juju mymaas maas-one
+    juju bootstrap --bootstrap-series=focal --bootstrap-constraints tags=juju mymaas maas-one
 
 <!-- LINKS -->
 
