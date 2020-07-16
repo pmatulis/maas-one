@@ -150,7 +150,8 @@ Transfer some scripts to the MAAS host:
     cd ~/maas-one
     scp config-maas.sh config-nodes.sh maas-login.sh ubuntu@10.0.0.2:
 
-> **Note**: `maas-login.sh` is a convenient script for logging in to MAAS.
+> **Note**: From the MAAS host, `maas-login.sh` can be used, if ever needed, to
+  log in to MAAS.
 
 ## Configure MAAS
 
@@ -171,11 +172,8 @@ Access the web UI:
     http://localhost:8002/MAAS
     credentials: admin/ubuntu
 
-Confirm networking and images. Verify controller status (items 'regiond' to
-'dhcpd' should be green). If not green this may help:
-
-    sudo systemctl restart maas-rackd.service
-    sudo systemctl restart maas-regiond.service
+Confirm networking, images, and controller ('Controllers' tab). For the
+controller, all the items from 'regiond' to 'dhcpd' should be green.
 
 ## Create the nodes
 
