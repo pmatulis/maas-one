@@ -62,9 +62,8 @@ So deployed nodes will use:
 
 ## Download this repo
 
-SSH to the KVM host with agent forwarding enabled. Forwarding can help with
-connectivity as `uvtool` can auto-install the agent's keys on its created
-instances. 
+SSH to the KVM host with agent forwarding enabled. Forward your usual personal
+keys.
 
     ssh -A <kvm-host>
     git clone https://github.com/pmatulis/maas-one
@@ -120,7 +119,7 @@ Create the MAAS host and server from the KVM host:
     uvt-kvm create \
        --template ./template-maas.xml \
        --user-data ./user-data-maas.yaml \
-       --cpu 4 --memory 4096 --disk 30 maas \
+       --cpu 4 --memory 4096 --disk 20 maas \
        release=focal
 
 The MAAS host should be ready in about five minutes:
@@ -151,11 +150,11 @@ Transfer some scripts to the MAAS host:
     cd ~/maas-one
     scp config-maas.sh config-nodes.sh maas-login.sh ubuntu@10.0.0.2:
 
-> **Note**: Script `maas-login.sh` is a handy script for logging in to MAAS.
+> **Note**: `maas-login.sh` is a convenient script for logging in to MAAS.
 
 ## Configure MAAS
 
-Connect to the MAAS host and run a script:
+Connect to the MAAS host and run a script to configure MAAS:
 
     ssh ubuntu@10.0.0.2
     ./config-maas.sh
@@ -172,8 +171,8 @@ Access the web UI:
     http://localhost:8002/MAAS
     credentials: admin/ubuntu
 
-Confirm networking and images. Verify controller status (items 'regiond' to 'dhcpd'
-should be green). If not green this may help:
+Confirm networking and images. Verify controller status (items 'regiond' to
+'dhcpd' should be green). If not green this may help:
 
     sudo systemctl restart maas-rackd.service
     sudo systemctl restart maas-regiond.service
@@ -184,7 +183,7 @@ should be green). If not green this may help:
   the disk sub-system). If choosing ZFS like this, perform the steps in
   `zfs-pools.txt` now.
 
-Run a script on the KVM host:
+To create the nodes run a script on the KVM host:
 
     cd ~/maas-one
     ./create-nodes.sh
@@ -200,7 +199,7 @@ are in the 'New' state.
 
 ## Configure the nodes
 
-Connect to the MAAS host and run a script:
+Connect to the MAAS host and run a script to configure the nodes:
 
     ssh ubuntu@10.0.0.2
     ./config-nodes.sh
@@ -212,9 +211,8 @@ state.
 
 ## Configure Juju
 
-Define a MAAS cloud, add it to Juju, and add a cloud credential.
-
-Run a script on the KVM host:
+Define a MAAS cloud, add it to Juju, and add a cloud credential by running a
+script on the KVM host:
 
     cd ~/maas-one
     ./cloud-and-creds.sh
