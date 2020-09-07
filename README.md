@@ -96,20 +96,23 @@ interfaces (created via `template-maas.xml`). Reference these in
 
 Edit `user-data-maas.yaml`:
 
-Your personal SSH key(s) are imported three times (INSERT YOURS instead
-of 'petermatulis'):
+1. Your personal SSH key(s) are imported three times (INSERT YOURS instead of
+   'petermatulis'):
 
-1. to the MAAS host 'ubuntu' user
-   - to allow basic connections to the MAAS host
+    1. to the MAAS host 'ubuntu' user
+       - to allow basic connections to the MAAS host
+    
+    1. to the MAAS host 'root' user
+       - to allow transferring the 'root' user public SSH key to the KVM host
+         (for MAAS to be able to manage power of KVM guests)
+    
+    1. to the MAAS server 'admin' user
+       - key will be installed on every MAAS-deployed node
+    
+    This key(s) should be forwarded when initially connecting to the KVM host.
 
-1. to the MAAS host 'root' user
-   - to allow transferring the 'root' user public SSH key to the KVM host
-     (for MAAS to be able to manage power of KVM guests)
-
-1. to the MAAS server 'admin' user
-   - key will be installed on every MAAS-deployed node
-
-This key should be forwarded when initially connecting to the KVM host.
+1. The MAAS version is chosen by way of a snap channel. Change it to your
+   liking.
 
 ## Create the MAAS host and server
 
