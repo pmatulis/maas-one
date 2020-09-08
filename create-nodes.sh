@@ -20,7 +20,7 @@ virt-install \
         --vcpus $VCPUS \
         --cpu host \
         --memory $RAM_SIZE_MB \
-        --disk "$NAME"_1.img,size=$DISK_SIZE_GB_1,pool=$POOL \
+        --disk "$NAME"_1.img,size=$DISK_SIZE_GB_1,pool=$POOL,serial=workaround-lp-1876258-"$NAME"_1 \
         --boot network
 
 # The usable MAAS nodes
@@ -62,9 +62,9 @@ for NAME in node1 node2 node3 node4; do
                 --vcpus $VCPUS \
                 --cpu host \
                 --memory $RAM_SIZE_MB \
-                --disk "$NAME"_1.img,size=$DISK_SIZE_GB_1,pool=$POOL \
-                --disk "$NAME"_2.img,size=$DISK_SIZE_GB_2,pool=$POOL \
-                --disk "$NAME"_3.img,size=$DISK_SIZE_GB_3,pool=$POOL  \
+                --disk "$NAME"_1.img,size=$DISK_SIZE_GB_1,pool=$POOL,serial=workaround-lp-1876258-"$NAME"_1 \
+                --disk "$NAME"_2.img,size=$DISK_SIZE_GB_2,pool=$POOL,serial=workaround-lp-1876258-"$NAME"_2 \
+                --disk "$NAME"_3.img,size=$DISK_SIZE_GB_3,pool=$POOL,serial=workaround-lp-1876258-"$NAME"_3 \
                 --boot network
 
 done
