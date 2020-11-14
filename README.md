@@ -72,7 +72,7 @@ keys.
 
 > **Important**: The Ubuntu release & architecture that you want to use for the
   MAAS host must correspond to this line in `install-software.sh`:
-  `sudo uvt-simplestreams-libvirt sync release=focal arch=amd64`.
+  `sudo uvt-simplestreams-libvirt sync release=<XXX> arch=<XXX>`.
   The release will be stated in step 'Create the MAAS host and server'.
 
 Install the software on the KVM host:
@@ -130,7 +130,7 @@ Create the MAAS host and server from the KVM host:
        --cpu 4 --memory 4096 --disk 20 maas \
        release=focal
 
-The MAAS host should be ready in about five minutes:
+The MAAS host should be ready in about 8 minutes:
 
     ssh ubuntu@10.0.0.2 uname
 
@@ -160,6 +160,11 @@ Transfer some scripts to the MAAS host:
 
 > **Note**: From the MAAS host, `maas-login.sh` can be used, if ever needed, to
   log in to MAAS.
+
+Wait until the MAAS server is up before continuing:
+
+    nc -vz 10.0.0.2 5240
+    Connection to 10.0.0.2 5240 port [tcp/*] succeeded!
 
 ## Configure MAAS
 
