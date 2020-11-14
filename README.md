@@ -70,12 +70,12 @@ keys.
 
 ## Install the software
 
-The Ubuntu release/arch to use for the MAAS host must correspond to this line
-in `install-software.sh`:
+> **Important**: The Ubuntu release & architecture that you want to use for the
+  MAAS host must correspond to this line in `install-software.sh`:
 
     sudo uvt-simplestreams-libvirt sync release=focal arch=amd64
 
-The release will be stated in step 'Create the MAAS host and server'.
+  The release will be stated in step 'Create the MAAS host and server'.
 
 Install the software on the KVM host:
 
