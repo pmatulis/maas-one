@@ -56,7 +56,7 @@ All commands are invoked on the KVM host.
 
 ### Instance connection
 
-This is extremely useful to do prior to attempting an SSH connection:
+This is recommended prior to attempting an SSH connection:
 
     openstack console log show focal-1
 
