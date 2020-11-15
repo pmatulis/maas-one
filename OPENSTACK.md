@@ -1,19 +1,15 @@
 # Using maas-one for an OpenStack cloud
 
-There are notes to follow once OpenStack has been built using the four MAAS
-nodes. Instructions for building an OpenStack cloud are here (by individual
-charm):
+This page provides command line guidance once OpenStack has been built using
+the four MAAS nodes. All commands are invoked on the KVM host.
 
-https://docs.openstack.org/project-deploy-guide/charm-deployment-guide/latest/install-openstack.html
+Begin by creating a Juju model:
 
-Note that the four available nodes should be sufficiently resourced. Disk and
-network interface requirements should already be fulfilled if the README was
-followed.
+    juju add-model --config default-series=focal openstack
 
-All commands are invoked on the KVM host.
+Now follow the instructions starting here for building an OpenStack cloud:
 
-> **Note**: If the README was followed precisely then the commands can be
-  invoked as-is.
+https://docs.openstack.org/project-deploy-guide/charm-deployment-guide/latest/install-openstack.html#ceph-osd
 
 ## Base client requirements
 
@@ -23,7 +19,7 @@ All commands are invoked on the KVM host.
     git clone https://github.com/openstack-charmers/openstack-bundles ~/openstack-bundles
     source ~/openstack-bundles/stable/openstack-base/openrc
 
-## Set up OpenStack networking (and image)
+## OpenStack networking (and image)
 
     openstack image create --public --container-format bare --disk-format raw --property architecture=x86_64 --property hw_disk_bus=virtio --property hw_vif_model=virtio --file ~/focal-amd64.img focal-amd64
     openstack network create ext_net --external --share --default --provider-network-type flat --provider-physical-network physnet1
@@ -61,6 +57,6 @@ This is recommended prior to attempting an SSH connection:
 
     openstack console log show focal-1
 
-Connect in the usual way:
+Connect:
 
     ssh -i ~/.ssh/admin-key ubuntu@$FLOATING_IP
