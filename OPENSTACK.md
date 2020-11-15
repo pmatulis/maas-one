@@ -12,9 +12,9 @@ Now follow the instructions starting here for building an OpenStack cloud:
 https://docs.openstack.org/project-deploy-guide/charm-deployment-guide/latest/install-openstack.html#ceph-osd
 
 > **Tips**: For file ``ceph-osd.yaml``, option ``osd-devices`` should be set to
-  `/dev/vdb` and for file ``neutron.yaml``, option
-  ``bridge-interface-mappings`` will need to be changed to something like
-  ``br-ex:enp2s0``.
+  `/dev/vdb` and for file ``neutron.yaml``, the value of option
+  ``bridge-interface-mappings`` will need to be changed (e.g.
+  ``br-ex:enp2s0``).
 
 ## Base client requirements
 
