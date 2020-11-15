@@ -1,16 +1,18 @@
 # Using maas-one for an OpenStack cloud
 
-There are notes to follow once MAAS is set up. To build an OpenStack cloud you
-will need five MAAS nodes, with four of them being powerful enough to run the
-cloud. One of them (the less resourced ideally) should now be acting as the
-Juju controller and four of them should be in the Ready state (as seen in the
-MAAS web UI). Disk and network interface requirements should already be fulfilled
-if the README was followed.
+There are notes to follow once OpenStack has been built using the four MAAS
+nodes. Instructions for building an OpenStack cloud are here:
+
+https://docs.openstack.org/project-deploy-guide/charm-deployment-guide/latest/install-openstack.html
+
+Note that the four available nodes should be sufficiently resourced. Disk and
+network interface requirements should already be fulfilled if the README was
+followed.
 
 All commands are invoked on the KVM host.
 
-> **Note**: If the README was followed precisely then the commands can be invoked
-  as-is.
+> **Note**: If the README was followed precisely then the commands can be
+  invoked as-is.
 
 ## Base client requirements
 

@@ -24,6 +24,10 @@ Adjust per your needs and desires by modifying `create-nodes.sh`.
 
 Before you begin, look over all the files. They're pretty simple.
 
+> **Note**: File ``OPENSTACK.md`` contains instructions for applying this
+  solution to an OpenStack cloud. It shows how to configure and use OpenStack.
+  It does not show how to **build** the cloud.
+
 ## General topology
 
                           |
@@ -161,10 +165,12 @@ Transfer some scripts to the MAAS host:
 > **Note**: From the MAAS host, `maas-login.sh` can be used, if ever needed, to
   log in to MAAS.
 
-Wait until the MAAS server is up before continuing:
+Check that the MAAS server is up:
 
     nc -vz 10.0.0.2 5240
     Connection to 10.0.0.2 5240 port [tcp/*] succeeded!
+
+Do not proceed until the MAAS server is responding (as shown above).
 
 ## Configure MAAS
 
