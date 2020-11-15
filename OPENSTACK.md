@@ -1,7 +1,8 @@
 # Using maas-one for an OpenStack cloud
 
 There are notes to follow once OpenStack has been built using the four MAAS
-nodes. Instructions for building an OpenStack cloud are here:
+nodes. Instructions for building an OpenStack cloud are here (by individual
+charm):
 
 https://docs.openstack.org/project-deploy-guide/charm-deployment-guide/latest/install-openstack.html
 
