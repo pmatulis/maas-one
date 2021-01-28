@@ -11,4 +11,4 @@ while [ $(maas $PROFILE rack-controller list-boot-images $RACK_ID | jq -r '.stat
    echo -n "."
 done
 
-echo "The ephemeral image is available. MAAS is ready for node enlistment."
+echo "The images are available. MAAS is ready for node enlistment."

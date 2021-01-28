@@ -196,7 +196,8 @@ transferred earlier:
 
     ssh ubuntu@10.0.0.2 ./check-ephemeral.sh
 
-Do not proceed until the script reports success.
+Do not proceed until the script reports success. Consult the web UI if the wait
+becomes long.
 
 ## Create the nodes
 
