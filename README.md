@@ -160,7 +160,7 @@ Confirm that the 'root' user can query libvirtd of the KVM host:
 Transfer some scripts to the MAAS host:
 
     cd ~/maas-one
-    scp config-maas.sh config-nodes.sh maas-login.sh check-ephemeral.sh ubuntu@10.0.0.2:
+    scp config-maas.sh config-nodes.sh maas-login.sh check-images.sh ubuntu@10.0.0.2:
 
 > **Note**: From the MAAS host, `maas-login.sh` can be used, if ever needed, to
   log in to MAAS.
@@ -191,10 +191,10 @@ Access the web UI:
 
 ## Check the images
 
-Ensure images are available for enlistment by running a script that was
+Ensure boot images are available for enlistment by running a script that was
 transferred earlier:
 
-    ssh ubuntu@10.0.0.2 ./check-ephemeral.sh
+    ssh ubuntu@10.0.0.2 ./check-images.sh
 
 Do not proceed until the script reports success. Consult the web UI if the wait
 becomes long.
@@ -221,11 +221,9 @@ are in the 'New' state.
 
 ## Configure the nodes
 
-Connect to the MAAS host and run a script to configure the nodes:
+Configure the nodes by running a script that was transferred earlier:
 
-    ssh ubuntu@10.0.0.2
-    ./config-nodes.sh
-    exit
+    ssh ubuntu@10.0.0.2 ./config-nodes.sh
 
 In the web UI confirm the new node names and node power settings. The nodes
 should also be commissioning. Continue when all five nodes are in the 'Ready'
