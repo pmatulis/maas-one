@@ -160,7 +160,7 @@ Confirm that the 'root' user can query libvirtd of the KVM host:
 Transfer some scripts to the MAAS host:
 
     cd ~/maas-one
-    scp config-maas.sh config-nodes.sh maas-login.sh check-images.sh ubuntu@10.0.0.2:
+    scp config-maas.sh config-nodes.sh maas-login.sh ubuntu@10.0.0.2:
 
 > **Note**: From the MAAS host, `maas-login.sh` can be used, if ever needed, to
   log in to MAAS.
@@ -189,15 +189,8 @@ Access the web UI:
     http://localhost:8002/MAAS
     credentials: admin/ubuntu
 
-## Check the images
-
-Ensure boot images are available for enlistment by running a script that was
-transferred earlier:
-
-    ssh ubuntu@10.0.0.2 ./check-images.sh
-
-Do not proceed until the script reports success. Consult the web UI if the wait
-becomes long.
+In the web UI confirm the availability of boot images. Continue when all the
+images (chosen in `config-maas.sh`) are in the 'Synced' state.
 
 ## Create the nodes
 
