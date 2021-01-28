@@ -8,6 +8,7 @@ RACK_ID=$(maas $PROFILE rack-controllers read | jq -r .[].system_id)
 
 while [ $(maas $PROFILE rack-controller list-boot-images $RACK_ID | jq -r '.status') != 'synced' ]; do
    sleep 2
+   echo -n "."
 done
 
 echo "The ephemeral image is available. MAAS is ready for node enlistment."

@@ -61,7 +61,7 @@ Reserved IP ranges:
     10.0.0.100 - 10.0.0.119   VIP       <-- HA workloads (if needed)
 
 So deployed nodes will use:
-   
+
     10.0.0.120 - 10.0.0.254
 
 ## Download this repo
@@ -110,14 +110,14 @@ Edit `user-data-maas.yaml`:
 
     1. to the MAAS host 'ubuntu' user
        - to allow basic connections to the MAAS host
-    
+
     1. to the MAAS host 'root' user
        - to allow transferring the 'root' user public SSH key to the KVM host
          (for MAAS to be able to manage power of KVM guests)
-    
+
     1. to the MAAS server 'admin' user
        - key will be installed on every MAAS-deployed node
-    
+
     This key(s) should be forwarded when initially connecting to the KVM host.
 
 1. The MAAS version is chosen by way of a snap channel. Change it to your
@@ -174,11 +174,9 @@ Do not proceed until the MAAS server is responding (as shown above).
 
 ## Configure MAAS
 
-Connect to the MAAS host and run a script to configure MAAS:
+Configure MAAS by running a script that was transferred earlier:
 
-    ssh ubuntu@10.0.0.2
-    ./config-maas.sh
-    exit
+    ssh ubuntu@10.0.0.2 ./config-maas.sh
 
 ## Verify the web UI
 
@@ -191,17 +189,14 @@ Access the web UI:
     http://localhost:8002/MAAS
     credentials: admin/ubuntu
 
-Confirm networking, images, and controller ('Controllers' tab). For the
-controller, all the items from 'regiond' to 'dhcpd' should be green.
+## Check the images
 
-## Check for an ephemeral image
+Ensure images are available for enlistment by running a script that was
+transferred earlier:
 
-Ensure that the MAAS server is ready to enlist nodes by checking for the
-availability of an ephemeral image.
+    ssh ubuntu@10.0.0.2 ./check-ephemeral.sh
 
-On the KVM host run:
-
-    ssh -q ubuntu@10.0.0.2 ./check-ephemeral.sh
+Do not proceed until the script reports success.
 
 ## Create the nodes
 

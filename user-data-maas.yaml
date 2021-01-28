@@ -3,7 +3,7 @@ ssh_pwauth: yes
 chpasswd:
   list: |
     ubuntu:ubuntu
-  expire: False
+  expire: false
 
 write_files:
   - path: /etc/netplan/50-cloud-init.yaml
@@ -27,6 +27,9 @@ write_files:
                 - 10.0.0.2/24
 
 package_upgrade: true
+
+packages:
+   - jq
 
 runcmd:
   - snap install maas-test-db
