@@ -160,7 +160,7 @@ Confirm that the 'root' user can query libvirtd of the KVM host:
 Transfer some scripts to the MAAS host:
 
     cd ~/maas-one
-    scp config-maas.sh config-nodes.sh maas-login.sh ubuntu@10.0.0.2:
+    scp config-maas.sh config-nodes.sh maas-login.sh check-ephemeral.sh ubuntu@10.0.0.2:
 
 > **Note**: From the MAAS host, `maas-login.sh` can be used, if ever needed, to
   log in to MAAS.
@@ -182,7 +182,7 @@ Connect to the MAAS host and run a script to configure MAAS:
 
 ## Verify the web UI
 
-Set up local port forwarding from your workstation:
+Set up local port forwarding from your desktop:
 
     ssh -N -L 8002:10.0.0.2:5240 ubuntu@<kvm-host>
 
@@ -194,25 +194,34 @@ Access the web UI:
 Confirm networking, images, and controller ('Controllers' tab). For the
 controller, all the items from 'regiond' to 'dhcpd' should be green.
 
+## Check for an ephemeral image
+
+Ensure that the MAAS server is ready to enlist nodes by checking for the
+availability of an ephemeral image.
+
+On the KVM host run:
+
+    ssh -q ubuntu@10.0.0.2 ./check-ephemeral.sh
+
 ## Create the nodes
+
+Creating the nodes will have them boot and be enlisted by MAAS.
 
 > **Optional**: Use ZFS pools with extra disks (or some other way to optimise
   the disk sub-system). If choosing ZFS like this, perform the steps in
   `zfs-pools.txt` now.
 
-To create the nodes run a script on the KVM host:
+To create the nodes run a script on the KVM host (if you are not using a custom
+libvirt pool then you will first need to edit the script):
 
     cd ~/maas-one
     ./create-nodes.sh
-
-If you are not using a custom libvirt pool then you will need to edit the
-script.
 
 You can ignore the warning that you may get about 'libvirt-qemu' user
 permissions.
 
 In the web UI confirm the appearance of the nodes. Continue when all five nodes
-are in the 'New' state. 
+are in the 'New' state.
 
 ## Configure the nodes
 
