@@ -28,7 +28,7 @@ https://docs.openstack.org/project-deploy-guide/charm-deployment-guide/latest/in
 
     openstack image create --public --container-format bare --disk-format raw --property architecture=x86_64 --property hw_disk_bus=virtio --property hw_vif_model=virtio --file ~/focal-amd64.img focal-amd64
     openstack network create ext_net --external --share --default --provider-network-type flat --provider-physical-network physnet1
-    openstack subnet create ext_subnet --allocation-pool start=10.0.0.10,end=10.0.0.99 --subnet-range 10.0.0.0/24 --no-dhcp --gateway 10.0.0.1 --network ext_net
+    openstack subnet create ext_subnet --allocation-pool start=10.0.0.40,end=10.0.0.99 --subnet-range 10.0.0.0/24 --no-dhcp --gateway 10.0.0.1 --network ext_net
     openstack network create int_net --internal
     openstack subnet create int_subnet --allocation-pool start=192.168.0.10,end=192.168.0.99 --subnet-range 192.168.0.0/24 --gateway 192.168.0.1 --dns-nameserver 10.0.0.2 --network int_net
     openstack router create router1

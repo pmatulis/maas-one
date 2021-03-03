@@ -56,8 +56,9 @@ Subnet gateway: `10.0.0.1`
 
 Reserved IP ranges:
 
-    10.0.0.1   - 10.0.0.9     Infra
-    10.0.0.10  - 10.0.0.99    Dynamic   <-- DHCP (enlistment, commissioning)
+    10.0.0.1   - 10.0.0.9     Infra     <-- infrastructure
+    10.0.0.10  - 10.0.0.39    Dynamic   <-- MAAS DHCP (enlistment, commissioning)
+    10.0.0.40  - 10.0.0.99    FIP       <-- OpenStack floating IPs (if needed)
     10.0.0.100 - 10.0.0.119   VIP       <-- HA workloads (if needed)
 
 So deployed nodes will use:
