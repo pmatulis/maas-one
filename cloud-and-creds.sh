@@ -3,8 +3,8 @@
 MAAS_INTERNAL=10.0.0.2
 CLOUD_YAML=~/cloud.yaml
 CREDS_YAML=~/credentials.yaml
-CLOUD_NAME=mymaas
-CREDS_NAME=anyuser
+CLOUD_NAME=maas-one
+CREDS_NAME=maas-one
 API_KEY=$(cat ~/admin-api-key)
 
 cat > $CLOUD_YAML << HERE
@@ -22,6 +22,11 @@ credentials:
       auth-type: oauth1
       maas-oauth: $API_KEY
 HERE
+
+# Remove the existing cloud if this is being re-run.
+if juju clouds 2>/dev/null | grep $CLOUD_NAME; then
+           juju remove-cloud $CLOUD_NAME
+fi
 
 juju add-cloud --client $CLOUD_NAME $CLOUD_YAML
 juju add-credential --client -f $CREDS_YAML $CLOUD_NAME

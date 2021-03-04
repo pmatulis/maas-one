@@ -135,7 +135,7 @@ Create the MAAS host and server from the KVM host:
        --cpu 4 --memory 4096 --disk 20 maas \
        release=focal
 
-The MAAS host should be ready in about 8 minutes:
+The MAAS host should be ready in a few minutes:
 
     ssh ubuntu@10.0.0.2 uname
 
@@ -236,7 +236,7 @@ script on the KVM host:
 From the KVM host, create a controller called 'maas-one' for cloud 'mymaas'.
 The node with the assigned tag 'juju' will be used:
 
-    juju bootstrap --bootstrap-series=focal --bootstrap-constraints tags=juju mymaas maas-one
+    juju bootstrap --bootstrap-series=focal --bootstrap-constraints tags=juju maas-one maas-one
 
 <!-- LINKS -->
 
