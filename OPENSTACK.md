@@ -30,7 +30,7 @@ https://docs.openstack.org/project-deploy-guide/charm-deployment-guide/latest/in
     openstack network create ext_net --external --share --default --provider-network-type flat --provider-physical-network physnet1
     openstack subnet create ext_subnet --allocation-pool start=10.0.0.40,end=10.0.0.99 --subnet-range 10.0.0.0/24 --no-dhcp --gateway 10.0.0.1 --network ext_net
     openstack network create int_net --internal
-    openstack subnet create int_subnet --allocation-pool start=192.168.0.10,end=192.168.0.99 --subnet-range 192.168.0.0/24 --gateway 192.168.0.1 --dns-nameserver 10.0.0.2 --network int_net
+    openstack subnet create int_subnet --allocation-pool start=192.168.0.10,end=192.168.0.199 --subnet-range 192.168.0.0/24 --gateway 192.168.0.1 --dns-nameserver 10.0.0.2 --network int_net
     openstack router create router1
     openstack router add subnet router1 int_subnet
     openstack router set router1 --external-gateway ext_net

@@ -191,7 +191,7 @@ Access the web UI:
     credentials: admin/ubuntu
 
 In the web UI confirm the availability of boot images. Continue when all the
-images (chosen in `config-maas.sh`) are in the 'Synced' state.
+images (chosen in `config-maas.sh`) have a status of 'Synced'.
 
 ## Create the nodes
 
