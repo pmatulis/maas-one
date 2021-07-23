@@ -5,6 +5,8 @@ This project installs a MAAS cluster on a single machine.
 Environment summary:
 
 * 1 powerful host (the "KVM host") running Ubuntu 18.04 LTS or Ubuntu 20.04 LTS
+     * SSH connections to this host are made to user account 'ubuntu'
+       (adjust accordingly when you see: `ubuntu@<kvm-host>`)
 
 * 6 KVM guests residing on the KVM host:
      * 1 for the MAAS host itself
@@ -70,7 +72,7 @@ So deployed nodes will use:
 SSH to the KVM host with agent forwarding enabled. Forward your usual personal
 keys.
 
-    ssh -A <kvm-host>
+    ssh -A ubuntu@<kvm-host>
     git clone https://github.com/pmatulis/maas-one
 
 ## Install the software
@@ -148,7 +150,7 @@ Get the API key for the MAAS server 'admin' user:
 Install the public SSH key for the MAAS host 'root' user into the 'ubuntu' user
 account on the KVM host:
 
-    ssh root@10.0.0.2 cat /var/snap/maas/current/root/.ssh/id_rsa.pub >> /home/ubuntu/.ssh/authorized_keys
+    ssh root@10.0.0.2 'cat /var/snap/maas/current/root/.ssh/id_rsa.pub' >> /home/ubuntu/.ssh/authorized_keys
 
 Confirm that the 'root' user can query libvirtd of the KVM host:
 
