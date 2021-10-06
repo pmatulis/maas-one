@@ -33,7 +33,7 @@ packages:
 
 runcmd:
   - snap install maas-test-db
-  - snap install maas --channel=2.9/stable
+  - snap install maas --channel=3.0/stable
   - maas init region+rack --maas-url http://10.0.0.2:5240/MAAS --database-uri maas-test-db:///
   - maas createadmin --username admin --password ubuntu --email admin@example.com --ssh-import lp:petermatulis
   - maas apikey --username admin > ~ubuntu/admin-api-key
