@@ -15,7 +15,7 @@ FIP_RANGE_START=10.0.0.40
 FIP_RANGE_END=10.0.0.99
 VIP_RANGE_START=10.0.0.100
 VIP_RANGE_END=10.0.0.119
-IMAGE_SERIES="bionic focal"
+IMAGE_SERIES="bionic focal jammy"
 IMAGE_ARCH=amd64
 
 maas login $PROFILE http://localhost:5240/MAAS - < $API_KEY_FILE >/dev/null

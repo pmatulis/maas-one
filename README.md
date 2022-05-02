@@ -102,7 +102,7 @@ Create a test instance to discover the names of the two MAAS host network
 interfaces (created via `template-maas.xml`). Reference these in
 `user-data-maas.yaml`, the cloud-init file for the MAAS host.
 
-    uvt-kvm create --template ./template-maas.xml test release=focal
+    uvt-kvm create --template ./template-maas.xml test release=jammy
     uvt-kvm ssh test ip a  # e.g. enp1s0 and enp2s0
     uvt-kvm destroy test
 
@@ -135,7 +135,7 @@ Create the MAAS host and server from the KVM host:
        --template ./template-maas.xml \
        --user-data ./user-data-maas.yaml \
        --cpu 4 --memory 4096 --disk 20 maas \
-       release=focal
+       release=jammy
 
 The MAAS host should be ready in a few minutes:
 
@@ -238,7 +238,7 @@ script on the KVM host:
 From the KVM host, create a controller called 'maas-one' for cloud 'maas-one'.
 The node with the assigned tag 'juju' will be used:
 
-    juju bootstrap --bootstrap-series=focal --bootstrap-constraints tags=juju maas-one maas-one
+    juju bootstrap --bootstrap-series=jammy --bootstrap-constraints tags=juju maas-one maas-one
 
 <!-- LINKS -->
 
