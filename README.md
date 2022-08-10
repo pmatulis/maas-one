@@ -89,11 +89,11 @@ Install the software on the KVM host:
 
 ## Set up the environment
 
-Log out and back in again and ensure that the 'default' libvirt network exists:
+Log out and back in again. Ensure that the 'default' libvirt network exists:
 
     virsh net-list --all
 
-Create the libvirt networks:
+Configure the libvirt networks:
 
     cd ~/maas-one
     ./create-networks.sh
@@ -103,13 +103,13 @@ interfaces (created via `template-maas.xml`). Reference these in
 `user-data-maas.yaml`, the cloud-init file for the MAAS host.
 
     uvt-kvm create --template ./template-maas.xml test release=jammy
-    uvt-kvm ssh test ip a  # e.g. enp1s0 and enp2s0
+    uvt-kvm ssh test ip link  # e.g. enp1s0 and enp2s0
     uvt-kvm destroy test
 
 Edit `user-data-maas.yaml`:
 
-1. Your personal SSH key(s) are imported three times (INSERT YOURS instead of
-   'petermatulis'):
+1. Your personal public SSH key(s) are imported three times (INSERT YOURS
+   instead of 'petermatulis'):
 
     1. to the MAAS host 'ubuntu' user
        - to allow basic connections to the MAAS host
@@ -119,12 +119,18 @@ Edit `user-data-maas.yaml`:
          (for MAAS to be able to manage power of KVM guests)
 
     1. to the MAAS server 'admin' user
-       - key will be installed on every MAAS-deployed node
+       - to allow you to connect to the cloud nodes
+       - the key(s) will be installed on every MAAS-provisioned node
 
     This key(s) should be forwarded when initially connecting to the KVM host.
 
 1. The MAAS version is chosen by way of a snap channel. Change it to your
    liking.
+
+1. The boot images imported by MAAS are configured at the top of
+   `config-maas.sh`:
+
+   `IMAGE_SERIES="bionic focal jammy"`
 
 ## Create the MAAS host and server
 
@@ -139,7 +145,7 @@ Create the MAAS host and server from the KVM host:
 
 The MAAS host should be ready in a few minutes:
 
-    ssh ubuntu@10.0.0.2 uname
+    ssh ubuntu@10.0.0.2 snap list | grep maas
 
 ## Post install MAAS tasks
 

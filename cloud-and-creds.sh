@@ -23,10 +23,17 @@ credentials:
       maas-oauth: $API_KEY
 HERE
 
-# Remove the existing cloud if this is being re-run.
-if juju clouds 2>/dev/null | grep $CLOUD_NAME; then
-           juju remove-cloud $CLOUD_NAME
+# Add the cloud. If it already exists, update it.
+if ! juju clouds 2>/dev/null | grep $CLOUD_NAME; then
+   juju add-cloud --client $CLOUD_NAME $CLOUD_YAML
+else
+   juju update-cloud --client $CLOUD_NAME -f $CLOUD_YAML
 fi
 
-juju add-cloud --client $CLOUD_NAME $CLOUD_YAML
-juju add-credential --client -f $CREDS_YAML $CLOUD_NAME
+# Add the credential. If it already exists, update it.
+if ! juju credentials 2>/dev/null | grep $CREDS_NAME; then
+   juju add-credential --client -f $CREDS_YAML $CLOUD_NAME
+else
+   juju update-credential --client $CLOUD_NAME $CREDS_NAME -f $CREDS_YAML
+fi
+
