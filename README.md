@@ -127,10 +127,8 @@ Edit `user-data-maas.yaml`:
 1. The MAAS version is chosen by way of a snap channel. Change it to your
    liking.
 
-1. The boot images imported by MAAS are configured at the top of
-   `config-maas.sh`:
-
-   `IMAGE_SERIES="bionic focal jammy"`
+Edit `config-maas.sh` to set the boot images imported by MAAS (see variable
+`IMAGE_SERIES`).
 
 ## Create the MAAS host and server
 

@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-OS_VARIANT=ubuntu18.04
+OS_VARIANT=ubuntu20.04
 POOL=images  # Remove 'pool' option below if not using a libvirt storage pool.
 
 # The Juju controller
@@ -62,9 +62,9 @@ for NAME in node1 node2 node3 node4; do
                 --vcpus $VCPUS \
                 --cpu host \
                 --memory $RAM_SIZE_MB \
-                --disk "$NAME"_1.img,size=$DISK_SIZE_GB_1 \
-                --disk "$NAME"_2.img,size=$DISK_SIZE_GB_2 \
-                --disk "$NAME"_3.img,size=$DISK_SIZE_GB_3 \
+                --disk "$NAME"_1.img,size=$DISK_SIZE_GB_1,pool=$POOL \
+                --disk "$NAME"_2.img,size=$DISK_SIZE_GB_2,pool=$POOL \
+                --disk "$NAME"_3.img,size=$DISK_SIZE_GB_3,pool=$POOL \
                 --boot network
 
 done
