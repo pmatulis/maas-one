@@ -1,6 +1,16 @@
 # Overview
 
-This project installs a MAAS cluster on a single machine. 
+This project installs a MAAS cluster on a single machine.
+
+> **Note**: I've experienced trouble with some software. The latest combination
+  of software that works for me is:
+
+  **A Focal MAAS 3.1 server on a Focal KVM host (with Focal and Jammy nodes)**
+
+  Let me know of your own findings.
+
+  Peter
+  2022-09-06
 
 Environment summary:
 
