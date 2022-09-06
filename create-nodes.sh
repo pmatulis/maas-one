@@ -3,6 +3,9 @@
 OS_VARIANT=ubuntu20.04
 POOL=images  # Remove 'pool' option below if not using a libvirt storage pool.
 
+# It appears that on Jammy this is needed.
+chmod o+x /home/ubuntu
+
 # The Juju controller
 
 VCPUS=2
