@@ -5,13 +5,12 @@ This project installs a MAAS cluster on a single machine.
 > **Note**: I've experienced trouble with some software versions. The latest
 > combination of software that works for me is:
 >
-> **A Focal KVM host with a Focal MAAS 3.1 server (with Focal and Jammy nodes
+> **a Focal KVM host with a Focal MAAS 3.1 server (with Focal and Jammy nodes
 > being provisioned)**
 >
 > Let me know of your own findings in the **Discussions** area.
 >
-> Peter
-> 2022-09-06
+> Peter (2022-09-06)
 
 Environment summary:
 
