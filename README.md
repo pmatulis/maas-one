@@ -109,14 +109,19 @@ Configure the libvirt networks:
     ./create-networks.sh
 
 Create a test instance to discover the names of the two MAAS host network
-interfaces (created via `template-maas.xml`). Reference these in
-`user-data-maas.yaml`, the cloud-init file for the MAAS host.
+interfaces:
 
     uvt-kvm create --template ./template-maas.xml test release=jammy
     uvt-kvm ssh test ip link  # e.g. enp1s0 and enp2s0
     uvt-kvm destroy test
 
-Edit `user-data-maas.yaml`:
+Edit `user-data-maas.yaml`, the cloud-init file for the MAAS host:
+
+1. The MAAS host network interfaces found in the previous step. There are four
+   potential substitutions to make.
+
+1. The MAAS version is chosen by way of a snap channel. Change it to your
+   liking.
 
 1. Your personal public SSH key(s) are imported three times (INSERT YOURS
    instead of 'petermatulis'):
@@ -133,9 +138,6 @@ Edit `user-data-maas.yaml`:
        - the key(s) will be installed on every MAAS-provisioned node
 
     This key(s) should be forwarded when initially connecting to the KVM host.
-
-1. The MAAS version is chosen by way of a snap channel. Change it to your
-   liking.
 
 Edit `config-maas.sh` to set the boot images imported by MAAS (see variable
 `IMAGE_SERIES`).
